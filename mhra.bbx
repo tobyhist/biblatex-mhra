@@ -1,4 +1,84 @@
 \ProvidesFile{mhra.bbx}[2011/11/6 v0.1 biblatex bibliography style]
 
 \RequireBibliographyStyle{verbose-ibid}
+\renewbibmacro{in:}{}
+
+\DeclareFieldFormat[article]{postnote}{\mkpageprefix[pagination]{\addspace}}
+
+\renewbibmacro*{publisher+location+date}{%
+  \addspace%
+  \setunit{}%
+  \mkbibparens{%
+    \printlist{location}%
+    \setunit*{\addcolon\space}%
+    \iflistundef{publisher}
+      {\setunit*{\addcomma\space}}
+      {\setunit*{\addcolon\space}}%
+    \printlist{publisher}%
+    \setunit*{\addcomma\space}%
+    \usebibmacro{date}%
+  \newunit}}
+
+\renewbibmacro*{journal+issuetitle}{%
+  \usebibmacro{journal}%
+  \setunit*{\addspace}%
+  \iffieldundef{series}
+    {}
+    {\newunit
+     \printfield{series}%
+     \setunit{\addspace}}%
+  \setunit{\addspace}%     
+  \addcomma%
+  \usebibmacro{volume+number+eid}%
+  \setunit{\addspace}%
+  \usebibmacro{issue+date}%
+  \setunit{\addcolon\space}%
+  \usebibmacro{issue}%
+  \newunit}
+
+\DeclareBibliographyDriver{incollection}{%
+  \usebibmacro{bibindex}%
+  \usebibmacro{begentry}%
+  \usebibmacro{author/translator+others}%
+  \setunit{\labelnamepunct}\newblock
+  \usebibmacro{title}%
+  \newunit
+  \printlist{language}%
+  \newunit\newblock
+  \usebibmacro{byauthor}%
+  \newunit\newblock
+  \printtext{in\addspace}%
+  \usebibmacro{maintitle+booktitle}%
+  \newunit\newblock
+  \usebibmacro{byeditor+others}%
+  \newunit\newblock
+  \printfield{edition}%
+  \newunit
+  \iffieldundef{maintitle}
+    {\printfield{volume}%
+     \printfield{part}}
+    {}%
+  \newunit
+  \printfield{volumes}%
+  \newunit\newblock
+  \usebibmacro{series+number}%
+  \newunit\newblock
+  \printfield{note}%
+  \newunit\newblock
+  \usebibmacro{publisher+location+date}%
+  \newunit\newblock
+  \usebibmacro{chapter+pages}%
+  \newunit\newblock
+  \iftoggle{bbx:isbn}
+    {\printfield{isbn}}
+    {}%
+  \newunit\newblock
+  \usebibmacro{doi+eprint+url}%
+  \newunit\newblock
+  \usebibmacro{addendum+pubstate}%
+  \setunit{\bibpagerefpunct}\newblock
+  \usebibmacro{pageref}%
+  \usebibmacro{finentry}}
+
+
 \endinput
